@@ -149,7 +149,7 @@ a:hover {
 /* ================= 头图 ================= */
 .hero {
     height: 60vh;
-    background: none;              /* 去掉渐变，用 body 大图 */
+    background: none;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -204,44 +204,6 @@ a:hover {
 .back-lint:hover {
     background: #fff;
     transform: translateY(-2px);
-}
-/* 弹幕式滚动音乐名  */
-.track-danmaku-container {
-    width: 160px;        /* 匹配播放器宽度 */
-    height: 24px;        /* 固定高度，适配18px字体 */
-    overflow: hidden;     /* 隐藏溢出内容 */
-    margin: 0 auto 8px;   /* 居中+底部间距 */
-    position: relative;   /* 相对定位，作为滚动容器 */
-}
-.track-danmaku {
-    white-space: nowrap;
-    font-size: 18px;
-    line-height: 24px;   /* 文字垂直居中 */
-    color: #4b5563;      /* 强制文字颜色，避免和背景融合 */
-    position: absolute;   /* 绝对定位，基于容器滚动 */
-    left: 0;
-    top: 0;
-    /* 核心：移除 alternate，改为单向无限滚动 */
-    animation: scroll-text 8s linear infinite;
-}
-/* 左→右滚动关键帧：从左侧进入→右侧消失→重新从左侧出现 */
-@keyframes scroll-text {
-    0% {
-        transform: translateX(-100%);  /* 初始：文字完全在容器左侧外 */
-    }
-    100% {
-        transform: translateX(100%); /* 结束：文字完全在容器右侧外 */
-    }
-}
-/* 控制按钮布局 */
-#music-player .controls button {
-    display: block;
-    width: 120px;
-    margin: 4px auto;
-    padding: 6px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
 }
 /* 加载动画 */
 body.pjax-loading {
