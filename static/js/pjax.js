@@ -12,17 +12,25 @@
     return true;
   }
 
-  /* 执行替换 */
-  function swap(html, url) {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const newMain = doc.querySelector(MAIN);
-    if (!newMain) return Promise.reject('no <main>');
-    document.querySelector(MAIN).innerHTML = newMain.innerHTML;
-    document.title = doc.title || '';
-    history.pushState(null, document.title, url);
-    window.scrollTo(0, 0);
-    return Promise.resolve();
+function swap(html, url) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const newMain = doc.querySelector(MAIN);
+  if (!newMain) return Promise.reject('no <main>');
+  document.querySelector(MAIN).innerHTML = newMain.innerHTML;
+  document.title = doc.title || '';
+  history.pushState(null, document.title, url);
+  window.scrollTo(0, 0);
+
+  // 触发 PJAX 生命周期事件
+  document.dispatchEvent(new Event("pjax:complete"));
+
+  // 重新高亮代码
+  if (window.Prism) {
+    Prism.highlightAll();
   }
+
+  return Promise.resolve();
+}
 
   /* 点击拦截 */
   document.addEventListener('click', e => {
