@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Hiter的博客{% endblock %}
+
+{% block extra_head %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+<style>
+.post-card{
+    max-width:800px;
+    margin:0 auto;
+    padding:40px;
+    min-height:60vh;
+    background:rgba(255,255,255,.25);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    color:#4b5563;
+}
+
+/*  Markdown 淡色反白 */
+h1{color:black}
+blockquote{
+    margin:1em 0;
+    padding-left:1em;
+    border-left:4px solid rgba(99,102,241,.4);
+    background:rgba(99,102,241,.08);
+    color:#4b5563;
+}
+pre{
+    background:rgba(245,245,245,.35);
+    padding:1em;
+    overflow:auto;
+    border-radius:6px;
+    color:#4b5563;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card post-card">
+    <h1>{{ title }}</h1>
+    <div class="card-content">{{ content|safe }}</div>   {# 不让content转义，因为content是HTML格式 #}
+    <a href="/posts" class="back-lint"> 返回列表 </a>
+</div>
+
+{% endblock %}

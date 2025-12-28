@@ -1,0 +1,251 @@
+/* ================= 变量 ================= */
+:root {
+    --bg: url("/static/img/bg.jpg") no-repeat center/cover fixed;
+    --card: rgba(255, 255, 255, 0.2);
+    --text: #4b5563;
+    --primary: #2b97bc;
+    --radius: 8px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+/* ================= 基础 reset ================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+/* ================= 布局 ================= */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+/* ================= 导航 ================= */
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: var(--shadow);
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    border-radius: var(--radius);
+}
+.nav-brand {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+.nav-links a {
+    margin-left: 15px;
+    font-size: .95rem;
+    opacity: .9;
+}
+.nav-links a:hover {
+    opacity: 1;
+}
+/* ================= 卡片通用 ================= */
+.card {
+    background: var(--card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: var(--shadow);
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: var(--radius);
+    color: var(--text);
+}
+.center-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* ================= 文章页专用 ================= */
+.card-content {
+    line-height: 1.8;
+    padding: 0 20px;
+}
+.card-content p {
+    margin-bottom: 1em;
+}
+.post-card {
+    padding: 40px 50px;
+    border-radius: 12px;
+    min-height: 60vh;
+}
+/* ================= 按钮 ================= */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #fff;
+    color: #667eea;
+    border-radius: var(--radius);
+    font-size: .95rem;
+    transition: background .3s;
+    text-decoration: none !important;
+}
+.btn:hover {
+    background: #f0f4ff;
+}
+.atn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px;
+    padding: 8px 16px;
+    font-size: .9rem;
+    border-radius: 20px;
+    background: #fff;
+    color: #667eea !important;
+    box-shadow: var(--shadow);
+    transition: transform .2s, background .3s;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+.atn:hover {
+    background: #f0f4ff;
+    transform: translateY(-2px);
+}
+.center-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+/* ================= 列表 ================= */
+.post-list {
+    list-style: none;
+    padding-left: 0;
+}
+.post-list li {
+    margin: 10px 0;
+}
+/* ================= 底栏 ================= */
+.footer {
+    text-align: center;
+    padding: 20px;
+    font-size: .9rem;
+    opacity: .7;
+}
+/* ================= 头图 ================= */
+.hero {
+    height: 60vh;
+    background: none;              /* 去掉渐变，用 body 大图 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+.hero-title {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+.hero-sub {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: .9;
+}
+.hero-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    background: #fff;
+    color: #6366f1;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+    transition: transform .3s;
+    text-decoration: none !important;
+}
+.hero-btn:hover {
+    background: #f0f4ff;
+    transform: translateY(-3px);
+}
+/* ===== 文章页返回按钮 ===== */
+.back-lint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 30px;
+    padding: 8px 18px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    color: #db98e6;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.3s;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.back-lint:hover {
+    background: #fff;
+    transform: translateY(-2px);
+}
+/* 弹幕式滚动音乐名  */
+.track-danmaku-container {
+    width: 160px;        /* 匹配播放器宽度 */
+    height: 24px;        /* 固定高度，适配18px字体 */
+    overflow: hidden;     /* 隐藏溢出内容 */
+    margin: 0 auto 8px;   /* 居中+底部间距 */
+    position: relative;   /* 相对定位，作为滚动容器 */
+}
+.track-danmaku {
+    white-space: nowrap;
+    font-size: 18px;
+    line-height: 24px;   /* 文字垂直居中 */
+    color: #4b5563;      /* 强制文字颜色，避免和背景融合 */
+    position: absolute;   /* 绝对定位，基于容器滚动 */
+    left: 0;
+    top: 0;
+    /* 核心：移除 alternate，改为单向无限滚动 */
+    animation: scroll-text 8s linear infinite;
+}
+/* 左→右滚动关键帧：从左侧进入→右侧消失→重新从左侧出现 */
+@keyframes scroll-text {
+    0% {
+        transform: translateX(-100%);  /* 初始：文字完全在容器左侧外 */
+    }
+    100% {
+        transform: translateX(100%); /* 结束：文字完全在容器右侧外 */
+    }
+}
+/* 控制按钮布局 */
+#music-player .controls button {
+    display: block;
+    width: 120px;
+    margin: 4px auto;
+    padding: 6px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+/* 加载动画 */
+body.pjax-loading {
+  cursor: progress;
+  opacity: .9;
+  transition: opacity .2s;
+}

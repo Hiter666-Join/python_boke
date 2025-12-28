@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Hiter的博客{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/style.css?v={{ ts }}">
+    {% block extra_head %}{% endblock %}
+
+    <style>
+        /* 播放器滚动样式 */
+        .track-danmaku-container {
+            width: 160px;
+            height: 24px;
+            overflow: hidden;
+            margin: 0 auto 8px;
+            position: relative;
+        }
+        .track-danmaku {
+            white-space: nowrap;
+            font-size: 18px;
+            line-height: 24px;
+            color: #4b5563;
+            position: absolute;
+            left: 0;
+            top: 0;
+            animation: scroll-text 8s linear infinite;
+        }
+        @keyframes scroll-text {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        #music-player .volume-wrapper {
+            margin-top: 12px;
+            padding: 0 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #music-player #mute {
+            font-size: 1.2rem;
+            color: #667eea;
+            background: #fff;
+            border: 1px solid #e0e7ff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: .2s;
+        }
+        #music-player #mute:hover {
+            transform: scale(1.1);
+            border-color: #a5b4fc;
+            color: #4f46e5;
+        }
+        #music-player .volume-slider-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        #music-player label[for="volume"] {
+            font-size: .7rem;
+            color: #667eea;
+            font-weight: 500;
+            padding-left: 2px;
+        }
+        #music-player #volume {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e0e7ff;
+            outline: none;
+            cursor: pointer;
+        }
+        #music-player #volume::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #667eea;
+            box-shadow: 0 2px 6px rgba(102,126,234,.35);
+            transition: .2s;
+        }
+        #music-player #volume::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            border-color: #4f46e5;
+        }
+        #music-player #volume::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #667eea;
+            box-shadow: 0 2px 6px rgba(102,126,234,.35);
+            transition: .2s;
+        }
+        #music-player #volume::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            border-color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 全站左侧功能 -->
+<aside class="site-clock" style="
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 999;
+">
+    <!-- 时钟和时间表  -->
+    <div id="pretty-clock" style="
+        width: 160px;
+        text-align: center;
+        font-family: 'Segoe UI', sans-serif;
+        color: #edd472;
+        background: rgba(255,255,255,.15);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0,0,0,.25);
+        padding: 20px 10px;
+    ">
+        <svg width="120" height="120" viewBox="0 0 120 120" style="margin:0 auto 12px;">
+            <circle cx="60" cy="60" r="58" fill="#ffffff" stroke="#ffffff" stroke-width="2"/>
+            <g stroke="#333" stroke-width="2">
+                {% for i in range(12) %}
+                    <line x1="60" y1="10" x2="60" y2="18" transform="rotate({{30*i}},60,60)"/>
+                {% endfor %}
+            </g>
+            <line id="hour" x1="60" y1="60" x2="60" y2="38" stroke="#000" stroke-width="4" stroke-linecap="round"/>
+            <line id="minute" x1="60" y1="60" x2="60" y2="25" stroke="#000" stroke-width="3" stroke-linecap="round"/>
+            <line id="second" x1="60" y1="60" x2="60" y2="20" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="5" fill="#ff4d4d"/>
+        </svg>
+        <div id="digital" style="font-size: 26px; font-weight: 600; letter-spacing: 1px;">00:00:00</div>
+    </div>
+
+    <!-- 音乐播放器 -->
+    <div id="music-player" class="card center-card-vertical" style="
+        width: 160px;
+        padding: 15px 10px;
+        margin: 0;
+        background: rgba(255,255,255,0.95);
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    ">
+        <div class="track-danmaku-container">
+            <div id="track-name" class="track-danmaku">暂无音乐</div>
+        </div>
+        <audio id="audio" preload="metadata"></audio>
+        <input type="file" id="dir-input" style="display: none;" webkitdirectory directory multiple accept="audio/*">
+        <div class="controls">
+            <button id="prev" style="width: 100%; margin: 3px 0; padding: 7px; border: none; border-radius: 6px; cursor: pointer; background: #f0f4ff; color: #667eea; font-size: 0.9rem; transition: all 0.2s ease;">上一首</button>
+            <button id="play" style="width: 100%; margin: 3px 0; padding: 7px; border: none; border-radius: 6px; cursor: pointer; background: #667eea; color: white; font-size: 0.9rem; transition: all 0.2s ease;">播放</button>
+            <button id="next" style="width: 100%; margin: 3px 0; padding: 7px; border: none; border-radius: 6px; cursor: pointer; background: #f0f4ff; color: #667eea; font-size: 0.9rem; transition: all 0.2s ease;">下一首</button>
+            <button id="open-dir" style="width: 100%; margin: 3px 0; padding: 7px; border: none; border-radius: 6px; cursor: pointer; background: #f5f5f5; color: #666; font-size: 0.8rem; transition: all 0.2s ease;">打开目录</button>
+
+            <!-- 音量控制 -->
+            <div class="volume-wrapper">
+                <button id="mute">🔊</button>
+                <div class="volume-slider-box">
+                    <label for="volume">音量</label>
+                    <input type="range" id="volume" min="0" max="1" step="0.05" value="1">
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<header>
+    <nav class="nav">
+        <a class="nav-brand" href="/">Hiter的博客</a>
+        <div class="nav-links">
+            <a href="/">首页</a>
+            <a href="/posts">文章</a>
+            <a href="#">碎碎念</a>
+            <a href="#">关于</a>
+        </div>
+    </nav>
+</header>
+
+<main class="container">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    © 2025 Hiter | Powered by FastAPI
+</footer>
+
+<script src="/static/js/mousetrail.js"></script>
+<script src="/static/js/clock.js"></script>
+<script src="/static/js/player.js"></script>
+<script src="/static/js/pjax.js"></script>
+
+</body>
+</html>
