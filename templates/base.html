@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <title>{% block title %}Hiter的博客{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 1. 主题背景变量 -->
+<style>
+    :root{
+        --bg-day:url("/static/img/bg.jpg") no-repeat center/cover fixed;
+        --bg-night:url("/static/img/bg2.jpg") no-repeat center/cover fixed;
+    }
+    body{background:var(--bg-day);transition:background .3s;}
+    [data-theme="dark"] body{background:var(--bg-night);}
+    </style>
+
+    <script>
+    (function(){
+    const s=localStorage.getItem('theme'),
+            m=matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme',s||(m?'dark':'light'));
+    })();
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
@@ -110,7 +127,8 @@
             border-color: #4f46e5;
         }
         /*  全局 Markdown 样式 */
-        h1{color:black}
+        h1{color: #e61d1d
+        }
         blockquote{
             margin:1em 0;
             padding-left:1em;
@@ -208,6 +226,17 @@
             <a href="/posts">文章</a>
             <a href="#">碎碎念</a>
             <a href="#">关于</a>
+            <button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+                <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
         </div>
     </nav>
 </header>
@@ -224,6 +253,7 @@
 <script src="/static/js/clock.js"></script>
 <script src="/static/js/player.js"></script>
 <script src="/static/js/pjax.js"></script>
+<script src="/static/js/switch.js"></script>
 
 </body>
 </html>

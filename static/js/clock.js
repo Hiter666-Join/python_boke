@@ -1,4 +1,4 @@
-/* 全站时钟（保留你现有逻辑） */
+/* 全站时钟 */
 (function(){
     const $ = id => document.getElementById(id);
     const secondHand = $('second');

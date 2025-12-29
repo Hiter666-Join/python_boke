@@ -1,6 +1,6 @@
 (() => {
   const MAIN = 'main.container';          // 需要被替换的节点
-  const LOAD_CLS = 'pjax-loading';        // 加载动画用
+  const LOAD_CLS = 'pjax-loading';        // 加载动画
 
   /* 判断是否需要 PJAX */
   function shouldPjax(a) {

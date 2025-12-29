@@ -37,6 +37,7 @@ function restorePlayState() {
     if (savedTracks && savedTracks.length > 0) {
         tracks = savedTracks;
         trackNames = savedTrackNames;
+        // current = Math.floor(Math.random() * tracks.length);
         current = savedTrack ? parseInt(savedTrack) : 0;
         loadTrack(); // 加载保存的歌曲
 
@@ -49,12 +50,13 @@ function restorePlayState() {
             volumeSlider.value = parseFloat(savedVolume);
             lastVolume = parseFloat(savedVolume);
             // 同步静音按钮图标
-            muteBtn.textContent = savedVolume == 0 ? "🔇" : "🔊";
+            const v = parseFloat(savedVolume);
+            muteBtn.textContent = v === 0 ? "🔇" : "🔊";
         }
 
         // 恢复播放状态
         if (savedIsPlaying && hasUserInteracted) {
-            autoPlayAudio();
+            autoPlayAudio().catch(err => console.warn('恢复播放失败', err));
         }
     }
 }
@@ -64,7 +66,7 @@ function setVolume(volume) {
     audio.volume = volume;
     lastVolume = volume; // 保存当前音量
     // 同步静音按钮图标
-    muteBtn.textContent = volume == 0 ? "🔇" : "🔊";
+    muteBtn.textContent = volume === 0 ? "🔇" : "🔊";
     console.log("音量已设置为：", Math.round(volume * 100) + "%");
 }
 
@@ -86,6 +88,7 @@ function toggleMute() {
 
 // 加载音乐列表
 async function loadMusicList() {
+    const savedTrack = localStorage.getItem("musicCurrentTrack");
     try {
         const res = await fetch("/music/list?timestamp=" + Date.now(), {
             cache: "no-cache",
@@ -107,12 +110,20 @@ async function loadMusicList() {
         // 解析音乐列表
         trackNames = data.tracks;
         tracks = data.tracks.map(name => "/music/" + name);
-        current = 0;
+        // current = 0;
+        if (!tracks.length) {
+            current = 0;
+        } else if (savedTrack != null) {
+            current = parseInt(savedTrack) % tracks.length;
+        } else if (current >= tracks.length) {      // 原下标越界
+            current = Math.floor(Math.random() * tracks.length);
+        }
         loadTrack(); // 加载第一首
+        localStorage.setItem("musicCurrentTrack",current);
 
         // 若用户已交互，直接自动播放
         if (hasUserInteracted) {
-            autoPlayAudio();
+            await autoPlayAudio();
         }
 
     } catch (err) {
@@ -159,7 +170,11 @@ function togglePlay() {
         isPlaying = false;
         playBtn.textContent = "播放";
     } else {
-        autoPlayAudio(); // 调用自动播放逻辑
+        currentTrackIndex = Math.floor(Math.random() * tracks.length);
+        current = currentTrackIndex;
+        loadTrack();
+        autoPlayAudio().catch(() => {}); // 调用自动播放逻辑
+        localStorage.setItem("musicCurrentTrack", current);
     }
 }
 
@@ -169,7 +184,7 @@ function playPrev() {
     hasUserInteracted = true;
     current = (current - 1 + tracks.length) % tracks.length;
     loadTrack();
-    autoPlayAudio(); // 切换后自动播放
+    autoPlayAudio().catch(() => {}); // 切换后自动播放
 }
 
 // 下一首（自动播放）
@@ -178,7 +193,7 @@ function playNext() {
     hasUserInteracted = true;
     current = (current + 1) % tracks.length;
     loadTrack();
-    autoPlayAudio(); // 切换后自动播放
+    autoPlayAudio().catch(() => {}); // 切换后自动播放
 }
 
 // 播放/暂停按钮
@@ -206,18 +221,13 @@ volumeSlider.addEventListener("dblclick", toggleMute);
 // 静音按钮点击事件
 muteBtn.addEventListener("click", toggleMute);
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
     console.log("页面加载完成，初始化音乐列表...");
-    // 先恢复之前的播放状态
+    // 先拿最新列表
+    await loadMusicList().catch(() => {});
+    // 再恢复之前的播放状态
     restorePlayState();
-    // 再加载音乐列表（若本地无状态则加载新列表）
-    loadMusicList();
-
-    // 监听用户任意点击（兜底标记交互）
-    document.addEventListener("click", () => {
-        hasUserInteracted = true;
-    }, { once: true }); // 只监听一次，避免重复触发
-
-    // 监听页面卸载，保存播放状态
+    // 监听交互和卸载保存
+    document.addEventListener("click", () => {hasUserInteracted = true}, {once: true});
     window.addEventListener("beforeunload", savePlayState);
 });

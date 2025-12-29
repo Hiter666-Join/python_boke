@@ -2,7 +2,7 @@
 :root {
     --bg: url("/static/img/bg.jpg") no-repeat center/cover fixed;
     --card: rgba(255, 255, 255, 0.2);
-    --text: #4b5563;
+    --text: #2b97bc;
     --primary: #2b97bc;
     --radius: 8px;
     --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -70,7 +70,6 @@ a:hover {
     padding: 25px;
     margin-bottom: 20px;
     border-radius: var(--radius);
-    color: var(--text);
 }
 .center-card {
     text-align: center;
@@ -155,7 +154,7 @@ a:hover {
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: #000000;
+    color: #fafafa;
 }
 .hero-title {
     font-size: 3rem;
@@ -217,7 +216,7 @@ a:hover {
     white-space: nowrap;
     font-size: 18px;
     line-height: 24px;   /* 文字垂直居中 */
-    color: #4b5563;      /* 强制文字颜色，避免和背景融合 */
+    color: #5695ea;      /* 强制文字颜色，避免和背景融合 */
     position: absolute;   /* 绝对定位，基于容器滚动 */
     left: 0;
     top: 0;
@@ -248,4 +247,40 @@ body.pjax-loading {
   cursor: progress;
   opacity: .9;
   transition: opacity .2s;
+}
+/* 主题切换按钮（仅红框位置） */
+.theme-toggle{
+  margin-left:12px;                 /* 与左侧链接保持一点距离 */
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  color:var(--text-color);
+  border-radius:50%;
+  width:20px;
+  height:13px;
+  display:inline-flex;              /* 让按钮在行内对齐，不破坏原flex */
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:background .3s, transform .2s;
+}
+.theme-toggle:hover{
+  background:var(--toggle-hover);
+  transform:scale(1.1);
+}
+.theme-toggle svg{
+  width:18px;
+  height:18px;
+  transition:opacity .3s, transform .3s;
+}
+.theme-toggle .sun-icon{opacity:1;position:absolute;}
+.theme-toggle .moon-icon{opacity:0;position:absolute;transform:rotate(90deg);}
+[data-theme="dark"] .theme-toggle .sun-icon{opacity:0;transform:rotate(-90deg);}
+[data-theme="dark"] .theme-toggle .moon-icon{opacity:1;transform:rotate(0);}
+/* 锁定文章页文字色 */
+.post-card,
+.post-card .card-content {
+    color: #B05923 !important;
+}
+.post-card blockquote {          /*  blockquote  */
+    color: #900021 !important;
 }
