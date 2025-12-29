@@ -14,6 +14,7 @@ let current = 0;
 let isPlaying = false;    // 播放状态
 let hasUserInteracted = false; // 标记用户是否已交互（绕开自动播放限制）
 let lastVolume = 1; // 保存最后一次音量（用于静音切换）
+let firstPlayDone = false;
 
 function savePlayState() {
     if (!audio) return;
@@ -170,11 +171,12 @@ function togglePlay() {
         isPlaying = false;
         playBtn.textContent = "播放";
     } else {
-        currentTrackIndex = Math.floor(Math.random() * tracks.length);
-        current = currentTrackIndex;
+        if (!firstPlayDone) {
+            current = Math.floor(Math.random() * tracks.length);
+            firstPlayDone = true;
+        }
         loadTrack();
         autoPlayAudio().catch(() => {}); // 调用自动播放逻辑
-        localStorage.setItem("musicCurrentTrack", current);
     }
 }
 
