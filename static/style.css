@@ -279,8 +279,8 @@ body.pjax-loading {
 /* 锁定文章页文字色 */
 .post-card,
 .post-card .card-content {
-    color: #B05923 !important;
+    color: #f64628 !important;
 }
 .post-card blockquote {          /*  blockquote  */
-    color: #eaa377 !important;
+    color: #9e4519 !important;
 }
