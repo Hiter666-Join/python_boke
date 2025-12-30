@@ -81,10 +81,10 @@ async def read_post(slug: str,request: Request):
         {"request":request,"title":slug,"content":html}     # return 一个请求和 URL 和转化的 HTML
     )
 
-@app.get("/msg")
-async def msg_page(request: Request):
+@app.get("/msg")            # 新路由，留言板的路由
+async def msg_page(request: Request):           # 和前面一样，返回一个 URL 请求
     return templates.TemplateResponse(
-        "msg.html",
+        "msg.html",                             #把 msg.html 给返回
         {"request": request}
     )
 
