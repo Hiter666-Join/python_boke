@@ -62,8 +62,8 @@ async def posts(request: Request):
 
 @app.get("/posts/{slug}")   #通过用户点击后， /posts/{slug} 自动把 URL 里对应位置的值注入 slug
 async def read_post(slug: str,request: Request):
-    if not re.fullmatch(r"[A-Za-z0-9\-_]+",slug):           #白名单校验
-        raise HTTPException(400,"非法文章名")
+    if not re.fullmatch(r"[\w\s\-\u4e00-\u9fff]{1,80}", slug):           #白名单校验
+        raise HTTPException(400,"文章名含非法字符或过长")
     md_file = ARTICLES / f"{slug}.md"       #把把 URL 中的  slug  变成硬盘上的文件路径
     if not md_file.exists():                #判断是否存在，if not 判断条件是否为假，.exists 方法用来寻找文件是否存在
         raise HTTPException(404,"文章不存在")    # 返回一个标准的 HTTP 错误响应
