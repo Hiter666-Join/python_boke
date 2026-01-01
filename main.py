@@ -88,6 +88,13 @@ async def msg_page(request: Request):           # 和前面一样，返回一个
         {"request": request}
     )
 
+@app.get("/guanyu")
+async def guanyu_page(request: Request):
+    return templates.TemplateResponse(
+        "guanyu.html",
+        {"request": request}
+    )
+
 # FastAPI 提供的全局异常钩子
 @app.exception_handler(StarletteHTTPException)          # 获取应用里任何地方抛出的异常
 async def custom_404(request: Request, exc: StarletteHTTPException):        #exc是被捕获到的异常实例
