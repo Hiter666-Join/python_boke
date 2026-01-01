@@ -19,67 +19,7 @@
         <a class="atn" href="/msg" target="_blank"> 📌 留言板 </a>
         <a class="atn" href="https://blog.csdn.net/Hiter_John" target="_blank"> 📚 CSDN </a>
         <a class="atn" href="https://github.com/Hiter666-Join" target="_blank"> 💻 GitHub </a>
-        <a id="luckBtn" class="atn" href="javascript:">🎯 今日手气</a>
     </div>
 </div>
-
-<div id="luckPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999">
-  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;padding:25px 40px;border-radius:8px;text-align:center;font-size:18px;min-width:260px;">
-    <span id="luckText"></span><br><br>
-    <button onclick="luckPanel.style.display='none'" style="padding:6px 16px;">关闭</button>
-  </div>
-</div>
-
-<script>
-const luck = [
-  '大吉｜今天很顺',
-  '中吉｜天气刚好',
-  '小吉｜胃口不错',
-  '凶｜有点倒霉',
-  '大吉｜心情晴朗',
-  '中吉｜事事和平',
-  '小吉｜小确幸到',
-  '凶｜小波折而已',
-  '大吉｜一切如意',
-  '中吉｜还算舒服',
-  '小吉｜平平淡淡',
-  '凶｜略有不顺',
-  '大吉｜好运在途',
-  '中吉｜没有惊喜',
-  '小吉｜一切正常',
-  '凶｜注意一点',
-  '大吉｜顺风顺水',
-  '中吉｜普普通通',
-  '小吉｜刚好够用',
-  '凶｜稍安勿躁',
-  '大吉｜能量满格',
-  '中吉｜还算轻松',
-  '小吉｜刚好及格',
-  '凶｜需要耐心',
-  '大吉｜满分状态',
-  '中吉｜宁静无事',
-  '小吉｜刚好过关',
-  '凶｜略感疲惫',
-  '大吉｜光芒万丈',
-  '中吉｜温和日常',
-  '小吉｜安然无恙',
-  '凶｜有点卡顿',
-  '大吉｜心旷神怡',
-  '中吉｜平平常常',
-  '小吉｜刚好合适',
-  '凶｜稍许麻烦',
-  '大吉｜顺风顺水',
-  '中吉｜无惊无险',
-  '小吉｜刚好解决',
-  '凶｜放慢脚步'
-];
-const luckPanel = document.getElementById('luckPanel');
-const luckText  = document.getElementById('luckText');
-document.getElementById('luckBtn').addEventListener('click', function (e) {
-  e.preventDefault();
-  luckText.textContent = luck[Math.floor(Math.random() * luck.length)];
-  luckPanel.style.display = 'block';
-});
-</script>
 
 {% endblock %}
