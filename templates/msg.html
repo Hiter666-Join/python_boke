@@ -80,8 +80,19 @@
   <div id="Comments"></div>
 
   <div class="back">
-    <a href="/" class="btn-home"> 返回博客 </a>
-  </div>
+  <button class="btn-home" onclick="closePage()">关闭页面</button>
+</div>
+
+<script>
+  function closePage() {
+    // 尝试关闭
+    window.close();
+    // 回退方案
+    setTimeout(() => {
+      alert('如未自动关闭，请手动关闭本页');
+    }, 200);
+  }
+</script>
 
   <script>
     Artalk.init({
