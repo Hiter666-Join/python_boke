@@ -69,54 +69,54 @@
     }
     .stat-bar span{margin:0 10px}
   </style>
-    <!-- 手机端留言板美化 开始 -->
-<style>
-@media (max-width: 600px) {
-  /* 1. 背景用半透明黑遮一层，突出内容 */
-  body {
-    background:
-      linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
-      url(/static/img/lyb.jpg) no-repeat center/cover fixed;
-  }
+    <!-- 手机端留言板 -->
+    <style>
+        @media (max-width: 600px) {
+        /* 1. 背景用半透明黑遮一层，突出内容 */
+    body {
+        background:
+        linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
+        url(/static/img/lyb.jpg) no-repeat center/cover fixed;
+    }
 
-  /* 2. 标题缩小 & 紧凑 */
-  h1 {
-    font-size: 22px;
-    margin: 24px 16px 16px;
-    letter-spacing: .5px;
-  }
+        /* 2. 标题缩小 & 紧凑 */
+    h1 {
+        font-size: 22px;
+        margin: 24px 16px 16px;
+        letter-spacing: .5px;
+    }
 
-  /* 3. 评论区圆角更大 + 内边距更小 */
-  #Comments {
-    margin: 0 12px 24px;
-    padding: 16px;
-    border-radius: 16px;
-    backdrop-filter: blur(16px);
-    box-shadow: 0 4px 20px rgba(0,0,0,.2);
-  }
+        /* 3. 评论区圆角更大 + 内边距更小 */
+    #Comments {
+        margin: 0 12px 24px;
+        padding: 16px;
+        border-radius: 16px;
+        backdrop-filter: blur(16px);
+        box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    }
 
-  /* 4. 统计条圆角 + 更小字号 */
-  .stat-bar {
-    margin: 12px 12px 0;
-    font-size: 12px;
-    padding: 4px 0;
-    border-radius: 12px;
-  }
+        /* 4. 统计条圆角 + 更小字号 */
+    .stat-bar {
+        margin: 12px 12px 0;
+        font-size: 12px;
+        padding: 4px 0;
+        border-radius: 12px;
+    }
 
-  /* 5. 关闭按钮缩小 & 置底居中 */
-  .back {
-    padding: 12px 0 20px;
-  }
-  .btn-home {
-    padding: 8px 20px;
-    font-size: 14px;
-    border-radius: 20px;
-  }
+        /* 5. 关闭按钮缩小 & 置底居中 */
+    .back {
+        padding: 12px 0 20px;
+    }
+    .btn-home {
+        padding: 8px 20px;
+        font-size: 14px;
+        border-radius: 20px;
+    }
 
-  /* 6. Artalk 内部元素再紧凑 */
-  .atk-list-container { padding: 0 !important; }
-  .atk-main-editor { padding: 12px !important; }
-  .atk-comment { padding: 10px 0 !important; }
+        /* 6. Artalk 内部元素再紧凑 */
+    .atk-list-container { padding: 0 !important; }
+    .atk-main-editor { padding: 12px !important; }
+    .atk-comment { padding: 10px 0 !important; }
 }
 </style>
 <!-- 手机端留言板美化 结束 -->
