@@ -20,6 +20,23 @@
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
 }
+.meta{
+    font-size:0.9em;
+    color:#555;
+    margin:-10px 0 20px 0;
+}
+.meta time{margin-right:12px}
+.tag{
+    background:rgba(0,0,0,.05);
+    padding:2px 8px;
+    border-radius:3px;
+}
+.back-lint{
+    display:inline-block;
+    margin-top:30px;
+    color:#0969da;
+    text-decoration:none;
+}
 </style>
 
 {% endblock %}
@@ -28,6 +45,11 @@
 
 <div class="card post-card">
     <h1>{{ title }}</h1>
+    <div class="meta">
+        <time>{{ date }}</time>
+        <span class="tag">{{ category }}</span>
+    </div>
+
     <div class="card-content">{{ content|safe }}</div>   {# 不让content转义，因为content是HTML格式 #}
     <a href="/posts" class="back-lint"> 返回列表 </a>
 </div>

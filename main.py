@@ -10,8 +10,8 @@ import markdown                                 #把 Markdown 字符串转成 HT
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
-
-app = FastAPI(debug=os.getenv("DEBUG","false").lower() == "true")       # debug 模式，不用修改后反复启动,部署记得删了!!!!!!!!!!!!!!!!!!!!
+import frontmatter
+app = FastAPI()       # debug 模式，不用修改后反复启动,部署记得删了!!!!!!!!!!!!!!!!!!!!
 
 # 跨域配置（解决前端请求接口被拦截的问题）
 app.add_middleware(
@@ -51,13 +51,21 @@ async def home(request: Request):
         {"request":request,"ts": int(time.time())}       # ts 用于给 CSS 加时间戳，强制浏览器刷新缓存
     )
 
-@app.get("/posts")      # posts 页面路由
+@app.get("/posts")
 async def posts(request: Request):
-    md_files = sorted(ARTICLES.glob("*.md"))    # .glob 出所有 .md 后缀的文件进行排序
-    items = [{"slug": f.stem,"title": f.stem} for f in md_files]    #使用推导式方式，.stem 获取文件的名称，放入字典 items
+    md_files = sorted(ARTICLES.glob("*.md"))
+    items = []
+    for f in md_files:
+        post = frontmatter.loads(f.read_text(encoding="utf-8"))
+        items.append({
+            "slug"     : f.stem,
+            "title"    : post.get("title", f.stem),
+            "date"     : post.get("date", "2026-01-01"),
+            "category" : post.get("category", "未分类")
+        })
     return templates.TemplateResponse(
         "posts.html",
-        {"request":request,"items":items}   # return 一个请求和字典 items
+        {"request": request, "items": items}
     )
 
 @app.get("/posts/{slug}")   #通过用户点击后， /posts/{slug} 自动把 URL 里对应位置的值注入 slug
@@ -67,9 +75,9 @@ async def read_post(slug: str,request: Request):
     md_file = ARTICLES / f"{slug}.md"       #把把 URL 中的  slug  变成硬盘上的文件路径
     if not md_file.exists():                #判断是否存在，if not 判断条件是否为假，.exists 方法用来寻找文件是否存在
         raise HTTPException(404,"文章不存在")    # 返回一个标准的 HTTP 错误响应
-    md_text = md_file.read_text(encoding="utf-8")              # .read_text 读取全部文本内容
+    post = frontmatter.loads(md_file.read_text(encoding="utf-8"))              # 用 frontmatter 分离元数据与正文
     html = markdown.markdown(                                  #将 markdown 转化成 HTML
-        md_text,
+        post.content,
         extensions=['extra', 'codehilite','fenced_code'],      # markdown 的文本，代码高亮显示
         extension_configs={                                    #扩展配置
             'codehilite': {
@@ -79,9 +87,14 @@ async def read_post(slug: str,request: Request):
             }
         }
     )
-    return templates.TemplateResponse(
+    return templates.TemplateResponse(          # return 一个请求和 URL 和转化的 HTML
         "post.html",
-        {"request":request,"title":slug,"content":html}     # return 一个请求和 URL 和转化的 HTML
+        {"request":request,
+         "title":post.get("title",slug),
+         "content":html,
+         "date":post.get("date","2026-01-01"),
+         "category":post.get("category","未分类")
+         }
     )
 
 @app.get("/msg")            # 新路由，留言板的路由

@@ -11,7 +11,11 @@
         {% for item in items %}
             <a class="article-card" href="/posts/{{ item.slug }}">
                 <div class="card-title">{{ item.title }}</div>
-                <div class="card-meta">📖 阅读全文 </div>
+                <div class="card-meta-bottom">
+                    <time>{{ item.date }}</time>
+                    <span class="tag">{{ item.category }}</span>
+                </div>
+                <div class="card-meta">📖 阅读全文</div>
             </a>
         {% endfor %}
         </div>
@@ -79,6 +83,17 @@
 .article-card:nth-child(4n+2){--accent:#10b981;--accent-light:rgba(16,185,129,.15);}
 .article-card:nth-child(4n+3){--accent:#f59e0b;--accent-light:rgba(245,158,11,.15);}
 .article-card:nth-child(4n+4){--accent:#ef4444;--accent-light:rgba(239,68,68,.15);}
+.card-meta-bottom{
+    font-size:0.8em;
+    color:#555;
+    margin-top:8px;
+}
+.card-meta-bottom time{margin-right:10px}
+.tag{
+    background:rgba(0,0,0,.08);
+    padding:2px 6px;
+    border-radius:3px;
+}
 </style>
 
 {% endblock %}
