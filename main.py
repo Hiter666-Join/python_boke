@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 import frontmatter
+from datetime import datetime, date
 app = FastAPI()       # debug 模式，不用修改后反复启动,部署记得删了!!!!!!!!!!!!!!!!!!!!
 
 # 跨域配置（解决前端请求接口被拦截的问题）
@@ -53,19 +54,27 @@ async def home(request: Request):
 
 @app.get("/posts")
 async def posts(request: Request):
-    md_files = sorted(ARTICLES.glob("*.md"))
     items = []
-    for f in md_files:
+    for f in ARTICLES.glob("*.md"):
         post = frontmatter.loads(f.read_text(encoding="utf-8"))
+        raw = post.get("date", date.today())
+        if isinstance(raw, date):
+            date_obj = raw
+        else:
+            date_obj = datetime.strptime(str(raw), "%Y-%m-%d").date()
+
         items.append({
             "slug"     : f.stem,
             "title"    : post.get("title", f.stem),
-            "date"     : post.get("date", "2026-01-01"),
-            "category" : post.get("category", "未分类")
+            "date"     : str(date_obj),
+            "category" : post.get("category", "未分类"),
+            "_date"    : date_obj         # 排序用
         })
+    items.sort(key=lambda x: x["_date"], reverse=True)
     return templates.TemplateResponse(
         "posts.html",
-        {"request": request, "items": items}
+        {"request": request,
+         "items": [{k: v for k, v in it.items() if k != "_date"} for it in items]}
     )
 
 @app.get("/posts/{slug}")   #通过用户点击后， /posts/{slug} 自动把 URL 里对应位置的值注入 slug
@@ -92,7 +101,7 @@ async def read_post(slug: str,request: Request):
         {"request":request,
          "title":post.get("title",slug),
          "content":html,
-         "date":post.get("date","2026-01-01"),
+         "date": str(post.get("date", date.today())),
          "category":post.get("category","未分类")
          }
     )
