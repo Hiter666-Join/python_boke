@@ -222,6 +222,30 @@
             </div>
         </div>
     </div>
+        <!-- 网站存活时间 -->
+    <div id="site-uptime" class="card center-card-vertical"
+         style="width:160px;padding:15px 10px;margin:0;background:rgba(255,255,255,.95);border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.12);font-size:14px;color:#333;text-align:center;">
+        <div style="margin-bottom:8px;font-weight:600;color:#667eea;">🕰️ 本站已运行</div>
+        <div id="uptime-display" style="font-size:18px;font-weight:700;">计算中...</div>
+    </div>
+
+    <script>
+        // 配置：建站时间
+        const SITE_BIRTH = new Date('2025-12-08T00:00:00'); // ← 修改为你的建站时间
+
+        function fmt(n){return n.toString().padStart(2,'0');}
+        function updateUptime(){
+            const diff = Date.now() - SITE_BIRTH;
+            const d = Math.floor(diff / 864e5);
+            const h = Math.floor((diff % 864e5) / 36e5);
+            const m = Math.floor((diff % 36e5) / 6e4);
+            const s = Math.floor((diff % 6e4) / 1e3);
+            document.getElementById('uptime-display').textContent =
+                `${d} 天 ${fmt(h)}:${fmt(m)}:${fmt(s)}`;
+        }
+        updateUptime();
+        setInterval(updateUptime, 1000);
+    </script>
 </aside>
 
 <header>
