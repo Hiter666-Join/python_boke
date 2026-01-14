@@ -21,14 +21,19 @@ function swap(html, url) {
   history.pushState(null, document.title, url);
   window.scrollTo(0, 0);
 
-  // 触发 PJAX 生命周期事件
   document.dispatchEvent(new Event("pjax:complete"));
 
-  // 重新高亮代码
   if (window.Prism) {
     Prism.highlightAll();
+    /* 关键：PJAX 重绘后立即补表格样式 */
+    document.querySelectorAll('.card-content table, .post-card table').forEach(t => {
+      t.style.cssText = 'border-collapse:collapse;width:100%;margin:1em 0;border:1px solid #e61d1d';
+      t.querySelectorAll('th,td').forEach(c => {
+        c.style.cssText = 'border:1px solid #e61d1d;padding:6px 10px';
+      });
+      t.querySelectorAll('th').forEach(h => h.style.background = '#fafafa');
+    });
   }
-
   return Promise.resolve();
 }
 
