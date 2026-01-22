@@ -136,6 +136,6 @@ Feel free to fork & remix！
 ---
 
 ## 🙋‍♂️ 作者
-- Blog: [https://wwwiamyyy.com](https://www.iamyyy.com)  
+- Blog: [https://wwwiamyyy.top](https://www.iamyyy.top)  
 - GitHub: [@Hiter666-Join](https://github.com/Hiter666-Join)  
 - CSDN: [Hiter_John](https://blog.csdn.net/Hiter_John)
