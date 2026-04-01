@@ -12,7 +12,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 import frontmatter
 from datetime import datetime, date
-app = FastAPI()       # debug 模式，不用修改后反复启动,部署记得删了!!!!!!!!!!!!!!!!!!!!
+app = FastAPI()       # debug 模式，关闭热部署
 
 # 跨域配置（解决前端请求接口被拦截的问题）
 app.add_middleware(
